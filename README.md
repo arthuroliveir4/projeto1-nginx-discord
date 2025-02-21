@@ -200,7 +200,7 @@ webhookdiscord_url =
 
 ## CONCLUSÃO DO PROJETO
 - A instância EC2 quando iniciada e em funcionamento na AWS, fornece a conexão à máquina Amazon Linux, nessa máquina estão configurados o NGINX, o script em Python e o crontab. Além do Discord com o bot webhook para receber as notificações.
-- O NGINX providencia o funcionamento da página WEB, o script em Python realiza a verificação do funcionamento da página e o crontab realiza a execução do script a cada minuto e o link do webhook do Discord dentro do script permite o envio de notificações diretamente para o chat do Discord.
+- O NGINX providencia o funcionamento da página WEB, o script em Python realiza a verificação do funcionamento da página, o crontab realiza a execução do script a cada minuto e o link do webhook do Discord dentro do script permite o envio de notificações diretamente para o chat do Discord.
 - Portanto, com a instância EC2 em estado "running" e tendo a conexão estabelecida via PuTTy, o servidor WEB irá funcionar, o script será executado e em caso de falha na obtenção de respostas da página, serão enviadas notificações a cada 1 minuto para o Discord.
 
 
