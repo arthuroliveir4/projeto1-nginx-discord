@@ -1,5 +1,17 @@
 # PROJETO SERVIDOR WEB NGINX + AWS
 
+## PRINCIPAIS TECNOLOGIAS UTILIZADAS NO PROJETO
+- Amazon Web Services (AWS), para criação da instância EC2 (com VPC e Security Groups personalizados), onde foi feita a configuração de um ambiente Amazon Linux, que servirá como máquina virtual para a configuração do servidor WEB e criação dos scripts.
+
+- Software PuTTy, para realzar a conexão na instância via chave SSH .ppk e IPv4 público da EC2.
+
+- NGINX, instalado dentro do ambiente Linux da EC2, com a função de servir a página WEB.
+
+- Python para realizar o script de monitoramento da página web e enviar notificações quando fora do ar.
+
+- Crond (crontab), ferramenta do Linux, utilizada para programar a execução do script, verificando a situação da página web a cada minuto.
+
+- Discord, para fazer a integração com o script e receber as notificações via chat (por meio de um bot webhook).
 ## CONFIGURAÇÃO DO AMBIENTE AWS
 - O primeiro passo é a criação de uma VPC com 2 subnets públicas e duas privadas, utilizando a criação automática da AWS, o Internet Gateway e as Route Tables já vêm configuradas.
 
@@ -186,36 +198,38 @@ python3 /home/ec2-user/monitoramento/monitoramento.py
 - Criar um novo Webhook e copiar a URL dele para colocar no monitoramento.py no início do script em
 webhookdiscord_url =
 
+## CONCLUSÃO DO PROJETO
+- A instância EC2 quando iniciada e em funcionamento na AWS, fornece a conexão à máquina Amazon Linux, nessa máquina estão configurados o NGINX, o script em Python e o crontab. Além do Discord com o bot webhook para receber as notificações.
+- O NGINX providencia o funcionamento da página WEB, o script em Python realiza a verificação do funcionamento da página e o crontab realiza a execução do script a cada minuto e o link do webhook do Discord dentro do script permite o envio de notificações diretamente para o chat do Discord.
+- Portanto, com a instância EC2 em estado "running" e tendo a conexão estabelecida via PuTTy, o servidor WEB irá funcionar, o script será executado e em caso de falha na obtenção de respostas da página, serão enviadas notificações a cada 1 minuto para o Discord.
 
 
 ## IMAGENS DO PROJETO
 
 - Configurações da EC2
 
-  https://imgur.com/a/mhQBciP
+  ![Image](https://github.com/user-attachments/assets/e1fbf100-b820-46a2-b67a-6d8718f11fc6)
 
 - Servidor WEB funcionando, servido pelo NGINX
 
-  https://imgur.com/a/Y8ejBxD
+  ![Image](https://github.com/user-attachments/assets/d3f855dd-571b-49ed-b0e6-0075a4ac048e)
 
 - Script monitoramento.py
 
-  https://imgur.com/a/ceOBx5M
+  ![Image](https://github.com/user-attachments/assets/7c2c4e9c-2311-4a07-9546-13e6024e986d)
 
 - Script Crontab para automação do script python
 
-  https://imgur.com/a/46vG4OU
+  ![Image](https://github.com/user-attachments/assets/52805ab9-c179-40da-9ffe-2cdd04fed39d)
 
 - NGINX em funcionamento e após ser parado
 
-  https://imgur.com/a/O1xSOlO
+  ![Image](https://github.com/user-attachments/assets/e359dc4e-a1e9-4389-b47c-e6309fe7dc35)
 
 - Notificações via Discord quando o serviço NGINX foi parado
 
-  https://imgur.com/a/lbSWXJ9
+  ![Image](https://github.com/user-attachments/assets/e0b18a21-5032-47c9-8c76-2b71a909717e)
 
 - Arquivo monitoramento.log no diretório /var/log antes e após a parada do NGINX
 
-  https://imgur.com/a/yexNAad
-
-
+  ![Image](https://github.com/user-attachments/assets/7ccbe34c-e818-40b5-8599-1b3b24e7dbeb)
