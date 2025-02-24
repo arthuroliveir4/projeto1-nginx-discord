@@ -272,7 +272,10 @@ webhookdiscord_url =
 - O NGINX providencia o funcionamento da página WEB, o script em Python realiza a verificação do funcionamento da página, o crontab realiza a execução do script a cada minuto e o link do webhook do Discord dentro do script permite o envio de notificações diretamente para o chat do Discord.
 - Portanto, com a instância EC2 em estado "running" e tendo a conexão estabelecida via PuTTy, o servidor WEB irá funcionar, o script será executado e em caso de falha na obtenção de respostas da página, serão enviadas notificações a cada 1 minuto para o Discord.
 
-- Teste do NGINX em funcionamento e após ser parado
+#### - Teste do NGINX em funcionamento e após ser parado. 
+- Nesse teste utilizei o comando "python3 /home/ec2-user/monitoramento/monitoramento.py" para receber uma mensagem do script.
+- __É possível notar na imagem que antes de parar o NGINX aparece uma mensagem dizendo que o site está online e após parar o NGINX, a mensagem mostra que o site está fora do ar__
+
 ![Image](https://github.com/user-attachments/assets/e359dc4e-a1e9-4389-b47c-e6309fe7dc35)
 
 - Teste da página WEB sem resposta após parar o NGINX
