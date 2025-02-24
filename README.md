@@ -1,9 +1,9 @@
 # PROJETO SERVIDOR WEB NGINX + AWS
 
 ## PRINCIPAIS TECNOLOGIAS UTILIZADAS NO PROJETO
-- Amazon Web Services (AWS), para criação da instância EC2 (com VPC e Security Groups personalizados), onde foi feita a configuração de um ambiente Amazon Linux, que servirá como máquina virtual para a configuração do servidor WEB e criação dos scripts.
+- Amazon Web Services (AWS), para criação da instância EC2, Amazon Linux 2023 com t2.micro (com VPC e Security Groups personalizados), onde foi feita a configuração de um ambiente que servirá como máquina virtual para a configuração do servidor WEB e criação dos scripts.
 
-- Software PuTTy, para realzar a conexão na instância via chave SSH .ppk e IPv4 público da EC2.
+- Software PuTTy, para realizar a conexão na instância, utilizando uma chave SSH .ppk e o IPv4 público da EC2.
 
 - NGINX, instalado dentro do ambiente Linux da EC2, com a função de servir a página WEB.
 
@@ -15,15 +15,26 @@
 ## CONFIGURAÇÃO DO AMBIENTE AWS
 - O primeiro passo é a criação de uma VPC com 2 subnets públicas e duas privadas, utilizando a criação automática da AWS, o Internet Gateway e as Route Tables já vêm configuradas.
 
+![Image](https://github.com/user-attachments/assets/6102c450-475d-4825-8d60-4cb78b1bfa21)
+
+
 - Após isso, criei um Security Group vinculado à VPC e liberei regras de entrada e saída para a porta 80 (HTTP) e 22 (SSH). A regra de saída já vem liberando para All, mas para as regras de entrada precisa adicionar as portas 80 e 22.
 
-- Agora é hora de criar a instância EC2, utilizei Amazon Linux e t2.micro.
+![Image](https://github.com/user-attachments/assets/250ed674-1af9-43c4-9db6-afe319eb4640)
+
+- Agora é hora de criar a instância EC2, utilizei Amazon Linux 2023 e t2.micro.
+
+![Image](https://github.com/user-attachments/assets/e1fbf100-b820-46a2-b67a-6d8718f11fc6)
+
 - Selecionei a VPC e o Security Group criados previamente.
 - Selecionei uma das subnets públicas da VPC.
 - Ainda nas configurações de rede da EC2, habilitei a atribuição automática de um IPv4 público à instância, para ser possível utilizar esse IP como endereço da página WEB.
 - Criei uma chave SSH (.ppk) para conectar via PuTTy.
 - Para conectar-se à instância com essa chave .ppk é necessária a instalação do programa PuTTy na sua máquina.
 - Nesse programa, você atribuirá a chave SSH e colocará o IPv4 público da instância para conectar-se nela.
+
+![Image](https://github.com/user-attachments/assets/1048957a-726d-4fc1-8bba-a871669b8cfb)
+
 - Após realizada a conexão, você terá acesso ao terminal da sua EC2 Amazon Linux.
 - No terminal, deve-se conectar com o usuário ec2-user (padrão para Amazon Linux).
 - Depois de logado, é a hora de iniciar a configuração do ambiente Linux com NGINX para servir a página WEB.
@@ -37,7 +48,8 @@ sudo amazon-linux-extras enable nginx1
 sudo yum install -y nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
-systemctl status nginx
+sudo systemctl restart nginx
+sudo systemctl status nginx
 ```
 Primeiro deve realizar os updates dos arquivos e pacotes do sistema, e seguir com a instalação do NGINX, os comandos podem variar de acordo com a sua distribuição caso estiver utilizando outra.
 
@@ -52,11 +64,57 @@ sudo nano index.html
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Teste</title>
+    <title>Projeto com Nginx, AWS e Discord</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 <body>
-    <h1>Olá, EC2 com Nginx!</h1>
-    <p>Esta é uma página simples servida pelo Nginx no Amazon Linux.</p>
+    <div class="container">
+        <h1>Olá, EC2 com Nginx!</h1>
+        <p>Este projeto demonstra a configuração de um servidor web usando <strong>Nginx</strong> hospedado em uma instância <strong>AWS EC2</strong>.</p>
+        <p>Além disso, a aplicação está integrada com um bot no <strong>Discord</strong>, permitindo comunicação em tempo real e automações.</p>
+        <p>O objetivo deste projeto é explorar a infraestrutura em nuvem e servidores web de forma prática.</p>
+        <a href="#" class="button">Saiba mais</a>
+    </div>
 </body>
 </html>
 ```
@@ -89,6 +147,8 @@ sudo systemctl restart nginx
 
 'PARA REINICIAR O SERVIÇO E APLICAR AS MUDANÇAS'
 ```
+- PÁGINA WEB EM FUNCIONAMENTO (Acessada pelo http://IPv4_Público_da_Ec2)
+![Image](https://github.com/user-attachments/assets/42970bdd-4fee-41c6-a623-73a3f328a6e3)
 
 ## INSTALAR OS RECURSOS DO PYTHON PARA FAZER O SCRIPT DE MONITORAMENTO
 
@@ -147,6 +207,9 @@ def monitorar_site():
 if __name__ == "__main__":
         monitorar_site()
 ```
+- Script Python no Linux
+![Image](https://github.com/user-attachments/assets/7c2c4e9c-2311-4a07-9546-13e6024e986d)
+
 - **EXPLICAÇÃO DO CÓDIGO MONITORAMENTO.PY**
    
    Primeiramente, foram importadas as bibliotecas: *requests*, para fazer as requisições HTTP (verificar o site) e a *time* para poder adicionar data e hora no log de monitoramento.
@@ -190,6 +253,9 @@ chmod +x /home/ec2-user/monitoramento/monitoramento.py
 'CASO QUEIRA TESTAR O SCRIPT MANUALMENTE'
 python3 /home/ec2-user/monitoramento/monitoramento.py
 ```
+- Script Crond no Linux
+![Image](https://github.com/user-attachments/assets/52805ab9-c179-40da-9ffe-2cdd04fed39d)
+
 
 ## CRIAÇÃO DO SERVIDOR NO DISCORD E CANAL DE TEXTO CONFIGURADO COM WEBHOOK:
 
@@ -198,37 +264,20 @@ python3 /home/ec2-user/monitoramento/monitoramento.py
 - Criar um novo Webhook e copiar a URL dele para colocar no monitoramento.py no início do script em
 webhookdiscord_url =
 
+- Notificações no Discord quando o NGINX para e a página WEB para de responder
+![Image](https://github.com/user-attachments/assets/e0b18a21-5032-47c9-8c76-2b71a909717e)
+
 ## CONCLUSÃO DO PROJETO
 - A instância EC2 quando iniciada e em funcionamento na AWS, fornece a conexão à máquina Amazon Linux, nessa máquina estão configurados o NGINX, o script em Python e o crontab. Além do Discord com o bot webhook para receber as notificações.
 - O NGINX providencia o funcionamento da página WEB, o script em Python realiza a verificação do funcionamento da página, o crontab realiza a execução do script a cada minuto e o link do webhook do Discord dentro do script permite o envio de notificações diretamente para o chat do Discord.
 - Portanto, com a instância EC2 em estado "running" e tendo a conexão estabelecida via PuTTy, o servidor WEB irá funcionar, o script será executado e em caso de falha na obtenção de respostas da página, serão enviadas notificações a cada 1 minuto para o Discord.
 
+- Teste do NGINX em funcionamento e após ser parado
+![Image](https://github.com/user-attachments/assets/e359dc4e-a1e9-4389-b47c-e6309fe7dc35)
 
-## IMAGENS DO PROJETO
-
-- Configurações da EC2
-
-  ![Image](https://github.com/user-attachments/assets/e1fbf100-b820-46a2-b67a-6d8718f11fc6)
-
-- Servidor WEB funcionando, servido pelo NGINX
-
-  ![Image](https://github.com/user-attachments/assets/d3f855dd-571b-49ed-b0e6-0075a4ac048e)
-
-- Script monitoramento.py
-
-  ![Image](https://github.com/user-attachments/assets/7c2c4e9c-2311-4a07-9546-13e6024e986d)
-
-- Script Crontab para automação do script python
-
-  ![Image](https://github.com/user-attachments/assets/52805ab9-c179-40da-9ffe-2cdd04fed39d)
-
-- NGINX em funcionamento e após ser parado
-
-  ![Image](https://github.com/user-attachments/assets/e359dc4e-a1e9-4389-b47c-e6309fe7dc35)
-
-- Notificações via Discord quando o serviço NGINX foi parado
-
-  ![Image](https://github.com/user-attachments/assets/e0b18a21-5032-47c9-8c76-2b71a909717e)
+- Teste da página WEB sem resposta após parar o NGINX
+![Image](https://github.com/user-attachments/assets/672a501d-21e9-4203-8d02-53e480ecf31b)
+__Detalhe que ao realizar esse teste de parar o NGINX, as notificações chegam no Discord, avisando que o site está sem resposta (como mostrado no print apresentado no tópico do Discord)__
 
 - Arquivo monitoramento.log no diretório /var/log antes e após a parada do NGINX
 
